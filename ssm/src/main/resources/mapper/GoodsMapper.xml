@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshu.dao.GoodsMapper">
+
+
+
+     <select id="findList" parameterType="goodsVo" resultType="goodsVo">
+  
+     
+     SELECT g.*,t.typename AS tname FROM goods g,goodstype t 
+     
+     <where>
+     
+  		g.typeid=t.id
+     <if test="name!=null and name!=''">
+     and g.name like '%${name}%'
+     </if>
+     <if test="typeid!=null and typeid!=0">
+     and g.typeid=#{typeid}
+     </if>
+     
+     </where>
+     
+     
+     
+     </select>
+		
+		<select id="countGoods" resultType="goodsVo">
+		
+			SELECT 
+			  t.typename AS tname ,
+			 COUNT(g.id) AS num 
+			FROM
+			  goodstype t 
+			  LEFT JOIN goods g 
+			    ON t.id = g.typeid 
+			GROUP BY t.id 
+		</select>
+
+
+
+  </mapper>
